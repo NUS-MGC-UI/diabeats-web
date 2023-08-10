@@ -20,16 +20,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-        # Authenticate with Google Cloud
-      - id: "auth"
-        uses: "google-github-actions/auth@v0"
+    # This step is where our service account will be authenticated
+      - uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          credentials_json: "${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}"
+          project_id: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
+          service_account_key: ${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT }}
+          service_account_email: ${{ secrets.CLOUD_RUN_SERVICE_ACCOUNT_EMAIL }}
 
-        # Setup gcloud CLI/SDK
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
-
+      - name: Enable the necessary APIs and enable docker auth
+        run: |-
+          gcloud services enable containerregistry.googleapis.com
+          gcloud services enable run.googleapis.com
+          gcloud --quiet auth configure-docker
 
       - name: Build and tag the docker image
         run: |-
@@ -44,5 +46,7 @@ jobs:
           gcloud run deploy $REPO_NAME \
           --region $REGION \
           --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
+          --project $PROJECT_ID \
           --platform "managed" \
+          --allow-unauthenticated \
           --quiet
