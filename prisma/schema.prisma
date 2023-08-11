@@ -1,3 +1,13 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note: For development purposes. Please change in production
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
 model User{
     id Int @id @default(autoincrement())
     username String
