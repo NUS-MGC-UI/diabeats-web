@@ -27,7 +27,6 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme='diabeats' className=' scroll-smooth' >
       <body className={inter.className}>
-        <Navbar/>
         {children}
         </body>
     </html>
