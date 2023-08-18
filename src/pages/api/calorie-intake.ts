@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { CalorieIntakeService } from '@/app/services/calorie-intake/CalorieIntakeService'
+import { CalorieIntakeService } from '@/src/services/calorie-intake/CalorieIntakeService'
 import { z } from "zod";
 
 const inputSchema = z.object({
