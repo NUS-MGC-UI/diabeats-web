@@ -4,8 +4,9 @@ generator client {
 
 // Note: For development purposes. Please change in production
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+//   directUrl = env("DIRECT_URL")
 }
 
 model User{
@@ -60,13 +61,13 @@ model Meal{
 }
 
 model Food {
-    id Int @id @default(autoincrement())
+    id String @id
     name String
     totalCalorie Int
-    carbohidrate Int
-    protein Int
-    fat Int
-    fiber Int
+    carbohidrate Int?
+    protein Int?
+    fat Int?
+    fiber Int?
     mealId Int? 
     meal Meal? @relation(fields: [mealId],references: [id])
 }
