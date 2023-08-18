@@ -7,8 +7,6 @@ export default async function AppHeader() {
     const pathname = usePathname()
     const pageTitle = pathname?.split('/').at(-1)
 
-   
-
     return (
         <div className=' bg-primary h-[15vh] font-century-ghotic items-center px-4 flex flex-row justify-between'>
             <div className=' capitalize'> {pageTitle} </div>
