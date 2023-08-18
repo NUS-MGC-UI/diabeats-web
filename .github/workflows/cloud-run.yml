@@ -8,9 +8,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
-  REGION: asia-southeast2
+  REGION: asia-northeast1
   # project-name but it can be anything you want
-  REPO_NAME: diabeats
+  REPO_NAME: diabeats-web
 
 jobs:
   build-and-deploy:
