@@ -7,11 +7,7 @@
     "build": "next build",
     "start": "next start -p 3000",
     "lint": "next lint",
-<<<<<<< HEAD
-    "vercel-build":""
-=======
     "vercel-build": "prisma migrate deploy && prisma generate && next build"
->>>>>>> 82013f0e3070d563d2e2044157762518c8d9106a
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
