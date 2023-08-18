@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note: For development purposes. Please change in production
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+    id String @id @default(uuid())
+    username String @unique
+    password String
+    profile Profile?
+}
+
+model Profile{
+    user User @relation(fields: [userId],references: [id])
+    userId String @id
+    age Int
+    weight Int
+    height Int
+    plan Plan?
+    meal Meal[]
+}
+
+model Plan{
+    user Profile @relation(fields: [userId],references: [userId])
+    userId String @id
+    maxCalorie Int
+    minCalorie Int
+    MaxCarbohidrate Int
+    MinCarbohidrate Int
+    MaxProtein Int
+    MinProtein Int
+    MaxFat Int
+    MinFat Int
+    MaxFiber Int
+    MinFiber Int
+}
+
+model MealType{
+    id Int @id @default(autoincrement())
+    name String @unique
+    meal Meal[]
+}
+
+model Meal{
+    id Int @id @default(autoincrement())
+    userId String
+    user Profile @relation(fields: [userId],references: [userId])
+    type String
+    mealType MealType @relation(fields: [type],references: [name])
+    listFood Food[]
+    date DateTime
+    isInsufficient Boolean
+    isSufficient Boolean
+    isExceeded Boolean
+}
+
+model Food {
+    id Int @id @default(autoincrement())
+    name String
+    totalCalorie Int
+    carbohidrate Int
+    protein Int
+    fat Int
+    fiber Int
+    mealId Int? 
+    meal Meal? @relation(fields: [mealId],references: [id])
+}
