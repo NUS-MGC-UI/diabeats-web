@@ -1,48 +1,57 @@
 'use client'
-import { useForm, useFieldArray, useWatch, Control } from "react-hook-form";
+import { getListFood } from "@/src/lib/getListFood";
+import { useForm, useFieldArray, useWatch, Control, useController, Controller } from "react-hook-form";
 import Select from 'react-select'
+import {prisma} from '@/src/lib/prisma'
+import { redirect } from 'next/navigation'
 
 type FormValues = {
   food: {
-    name: string;
-    quantity: number;
+    name: string|undefined,
+    quantity: number,
   }[];
 };
 
 
 
-const Total = ({ control }: { control: Control<FormValues> }) => {
-  const formValues = useWatch({
-    name: "food",
-    control
-  });
+// const Total = ({ control }: { control: Control<FormValues> }) => {
+//   const formValues = useWatch({
+//     name: "food",
+//     control
+//   });
 
-  //   Calorie logic
-  // get food(name)-> fat carb protein fiber * quantity
-  return <p>Total Amount: Jumlah Kalori</p>;
-};
+//   //   Calorie logic
+//   // get food(name)-> fat carb protein fiber * quantity
+//   return <p>Total Amount: Jumlah Kalori</p>;
+// };
 
-export default function MealForm({ mealName }: { mealName: string }) {
+export default function MealForm({ mealName, foodOptions }: { mealName: string, foodOptions: { value: string, label: string }[] }) {
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<FormValues>({
     mode: "onBlur"
   });
+
   const { fields, append, remove } = useFieldArray({
     name: "food",
     control
   });
-  const onSubmit = (data: FormValues) => console.log(data);
+  const onSubmit = (formData: FormValues) => {
+    window.location.replace('/demo/applications/dashboard')
+  };
 
-  // Prisma get the typing
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
+  const handleonChange = (index: number) => {
+    register(`food.${index}.name` as const, {
+      valueAsNumber: true,
+      required: true
+    })
+  }
+  const { field: { value: foodValue, onChange: langOnChange, ...restFoodField } } = useController({ name:'food', control });
+
 
   return (
     <div className="collapse bg-base-100 shadow-xl">
@@ -75,10 +84,33 @@ export default function MealForm({ mealName }: { mealName: string }) {
               return (
                 <div key={field.id}>
                   <section className={"section flex flex-row pt-3 gap-3"} key={field.id}>
-                    <Select options={options}
-                    className={errors?.food?.[index]?.name ? "error" : ""}
-                    required
+                    {/* <Controller
+                      name="foodName" // Replace with your field name
+                      control={control}
+                      // as = {<Select/>}
+                      // defaultValue={} // Set the initial selected value
+                      render={({ field }) => (
+                        <Select
+                        {...field}
+                          options={foodOptions} // Replace with your options array
+                        />
+                      )}
+                    /> */}
+                    <Select options={foodOptions}
+                      className={errors?.food?.[index]?.name ? "error" : ""}
+                      required
+                      isClearable
+                      onChange={(choice)=>{setValue(`food.${index}.name`,choice?.label)}}
                     />
+                    {/* <Select
+                      className='select-input'
+                      placeholder="Select Language"
+                      isClearable
+                      options={foodOptions}
+                      value={foodValue? foodOptions.find(x => x.value === foodValue) : foodValue}
+                      onChange={option => langOnChange(option ? option.value : option)}
+                      {...restFoodField}
+                    /> */}
                     <input
                       placeholder="Quantity (in gr)"
                       type="number"
@@ -96,7 +128,7 @@ export default function MealForm({ mealName }: { mealName: string }) {
               );
             })}
 
-            <Total control={control} />
+            {/* <Total control={control} /> */}
 
             <button
               type="button" className="btn rounded-full btn-sm"
