@@ -4,7 +4,7 @@
 
     export default async function handler(req: NextApiRequest, res: NextApiResponse) {
       const { method } = req;
-      const id = parseInt(req.query.id as string);
+      const id = req.query.id as string;
 
       if (method === 'GET') {
         const food = await prisma.food.findUnique({
