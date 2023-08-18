@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function page() {
     return (
@@ -9,8 +10,13 @@ export default function page() {
                 <h1 className=' font-century-ghotic tracking-widest font-bold text-3xl'>DIABEATS</h1>
                 <p>Web version - v0.1</p>
                 <div className='flex flex-col md:flex-row md:justify-center gap-3'>
-                    <button className=' btn btn-accent min-w-full'>Get Started</button>
-                    <button className=' btn btn-accent btn-outline min-w-full'>Already have an account</button>
+                    <Link href={'/demo/applications/dashboard/'}>
+                        <button className=' btn btn-accent min-w-full'>Get Started</button>
+                    </Link>
+                    <Link href={'/demo/applications/dashboard/'}>
+                        <button className=' btn btn-accent btn-outline min-w-full'>Already have an account</button>
+
+                    </Link>
                 </div>
             </div>
         </div>
