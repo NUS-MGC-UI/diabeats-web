@@ -18,7 +18,8 @@ module.exports = {
     fontFamily:{
       'sans': ['Helvetica', ...defaultTheme.fontFamily.sans],
       'serif': [...defaultTheme.fontFamily.serif],
-      'mono': [...defaultTheme.fontFamily.mono]
+      'mono': [...defaultTheme.fontFamily.mono],
+      'century-ghotic':['Century Gothic', 'sans-serif']
     }
   },
   plugins: [require('daisyui')],
@@ -27,7 +28,7 @@ module.exports = {
       {
         'diabeats': {
            'primary' : '#3A5A4F',
-           'primary-focus' : '#89978B',
+           'primary-focus' : '#B6D4BD',
            'primary-content' : '#ffffff',
 
            'secondary' : '#DFA1D1',
